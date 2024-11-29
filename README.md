@@ -23,14 +23,14 @@ class Object {
   ref : reference[0-5] Object
 }
 ```
-object constraints in ocl
+constraint meta-model in ocl
 ```
 context Object : SubSetSum(target : int) =
   let query = self.var(ref).ref.ref.attribute in
     query.sum() = target and
     query.isUnique();
 ```
-instance to solve for
+model to solve for
 ```xmi
 <object 1>
   <attribute> 10 </attribute>
@@ -45,3 +45,4 @@ instance to solve for
   <attribute> 13 </attribute>
 </ object>
 ```
+from this we make a constraint model to solve
