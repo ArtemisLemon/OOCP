@@ -12,7 +12,9 @@ Compiler from EMF.xmi and OCL.atl to CSP.choco
 - OCL2Choco : which adds to the Choco Model from an OCL file
 
 ## Var Compiler Annotation
-You can annotate different models (.xcore, .xmi, .atl) to identify points to change the model, or limit the scope of the Solver.
+You can annotate different models (.xcore, .xmi, .atl) to guide compilation
+- choose between optimisation (model completion), model fixing, model validating
+- limit the scope of the solver on large models
 
 
 ## Example Models
