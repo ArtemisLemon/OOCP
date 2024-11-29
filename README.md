@@ -53,3 +53,15 @@ model to solve for, can be programatically generated using .xcore
 ```
 from this we make a constraint model to solve
 this is also a bit pseudocodey for now
+
+
+## Quick Links for AIMT Meetings
+- [OCL2Choco](https://github.com/ArtemisLemon/OOCP/blob/master/lib/src/main/java/org/uml2choco/atlocl2choco/OCL2Choco.java)
+- [XMI2Choco](https://github.com/ArtemisLemon/OOCP/blob/master/lib/src/main/java/org/uml2choco/xmi2choco/XMI2Choco.java)
+- [OCLinChoco](https://github.com/ArtemisLemon/OCLinChoco)
+- [OCLinChoco:RefTable](https://github.com/ArtemisLemon/OCLinChoco/blob/master/lib/src/main/java/org/oclinchoco/ReferenceTable.java)
+[OCLinChoco:NavCSP](https://github.com/ArtemisLemon/OCLinChoco/blob/master/lib/src/main/java/org/oclinchoco/NavCSP.java)
+- [OCL 2.4](https://www.omg.org/spec/OCL/2.4/)
+- [ATL lang](https://wiki.eclipse.org/ATL/User_Guide_-_The_ATL_Language)
+- [ATL API](https://help.eclipse.org/latest/index.jsp?topic=%2Forg.eclipse.m2m.atl.doc%2Fguide%2Fdeveloper%2FATL+Developer+Guide.html)
+- [Var&navCSP overleaf](https://www.overleaf.com/project/66d81a0bd3edfa84f15b717b)
