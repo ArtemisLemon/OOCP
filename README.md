@@ -34,13 +34,13 @@ instance to solve for
 ```xmi
 <object 1>
   <attribute> 10 </attribute>
-</ object>
+</object>
 <object 2>
   <attribute> 11 </attribute>
-</ object>
+</object>
 <object 3>
   <attribute> 12 </attribute>
-</ object>
+</object>
 <object 4>
   <attribute> 13 </attribute>
 </ object>
