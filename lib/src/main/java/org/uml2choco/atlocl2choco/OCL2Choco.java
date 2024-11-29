@@ -42,4 +42,26 @@ public class OCL2Choco {
         //return new context
         return new Context(c, nav);
     }
+
+    static private Context compileVar(OperatorCallExp o, Context c){
+        Context cc = compile(o.getSource());
+        if(cc.isVariable() || cc.isSelf()) return compile(wrapVar(o),c); //calls above compile(NavOrAttibExpCall)
+
+        //Run standard OCL interpreter
+        //if output is objects find prop table?
+        //think about it
+    }
+    static private NavigationOrAttributeCallExp wrapVar(OperatorCallExp o){
+        NavigationOrAttributeCallExp out = new NavigationOrAttributeCallExp();
+        out.setSource(o.getSource());
+        out.setName(o.getArguments(0));
+    }
+
+
+    static private Context compile(OperatorCallExp o, Context c){
+        if(o.getOperationName()=="var") return compileVar(o,c);
+        // swtich(op.getOperationName()){
+        //     case "var" : return compile()
+        // }
+    }
 }
