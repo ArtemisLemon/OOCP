@@ -33,7 +33,7 @@ context Object : SubSetSum(target : int) =
     query.sum() = target and
     query.isUnique();
 ```
-model to solve for
+model to solve for, can be programatically generated using .xcore
 ```xmi
 <object 1>
   <attribute> 10 </attribute>
@@ -47,5 +47,7 @@ model to solve for
 <object 4>
   <attribute> 13 </attribute>
 </ object>
+<int target = 33 />
 ```
 from this we make a constraint model to solve
+this is also a bit pseudocodey for now
