@@ -16,6 +16,8 @@ repositories {
 }
 
 dependencies {
+    implementation project(':OCLinChoco:lib')
+
     // Use JUnit Jupiter for testing.
     testImplementation libs.junit.jupiter
 

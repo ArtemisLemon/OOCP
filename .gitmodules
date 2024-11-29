@@ -1,0 +1,3 @@
+[submodule "OCLinChoco"]
+	path = OCLinChoco
+	url = git@github.com:ArtemisLemon/OCLinChoco.git
