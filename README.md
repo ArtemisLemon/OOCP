@@ -13,7 +13,8 @@ Compiler from EMF.xmi and OCL.atl to CSP.choco
 
 ## Var Compiler Annotation
 You can annotate different models (.xcore, .xmi, .atl) to guide compilation
-- choose between optimisation (model completion), model fixing, model validating
+- choose between optimisation, fixing, exploration, etc..
+- no annotations does model validation and simple completion
 - limit the scope of the solver on large models
 
 
