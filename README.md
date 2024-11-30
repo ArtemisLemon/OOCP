@@ -10,7 +10,7 @@ Compiler from EMF.xmi and OCL.atl to CSP.choco
 - Save(xmi)
 
 ## 2 Compliers:
-- XMI2Choco : which makes a Choco Model from an XMI file (Can solve after this comiplation, to check against meta-model)
+- XMI2Choco : which makes a Choco Model from an XMI file 
 - OCL2Choco : which adds to the Choco Model from an OCL file
 
 ## .var() Annotation
