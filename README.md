@@ -13,8 +13,9 @@ Compiler from EMF.xmi and OCL.atl to CSP.choco
 - XMI2Choco : which makes a Choco Model from an XMI file 
 - OCL2Choco : which adds to the Choco Model from an OCL file
 
-## Var Compiler Annotation
+## .var() Annotation
 You can annotate different models (.xcore, .xmi, .atl) to guide compilation
+- src.var(prop, ...)
 - choose between optimisation, fixing, exploration, etc..
 - no annotations does model validation and simple completion
 - limit the scope of the solver on large models
@@ -53,6 +54,7 @@ model to solve for, can be programatically generated using .xcore
 ```
 from this we make a constraint model to solve
 this is also a bit pseudocodey for now
+[See navCSP_SubSetSum for details](https://github.com/ArtemisLemon/navCSP_SubsetSum)
 
 
 ## Quick Links for AIMT Meetings
