@@ -64,4 +64,5 @@ this is also a bit pseudocodey for now
 - [OCL 2.4](https://www.omg.org/spec/OCL/2.4/)
 - [ATL lang](https://wiki.eclipse.org/ATL/User_Guide_-_The_ATL_Language)
 - [ATL API](https://help.eclipse.org/latest/index.jsp?topic=%2Forg.eclipse.m2m.atl.doc%2Fguide%2Fdeveloper%2FATL+Developer+Guide.html)
+- [Ecore API](https://download.eclipse.org/modeling/emf/emf/javadoc/2.11/org/eclipse/emf/ecore/package-summary.html)
 - [Var&navCSP overleaf](https://www.overleaf.com/project/66d81a0bd3edfa84f15b717b)
