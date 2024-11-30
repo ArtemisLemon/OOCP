@@ -10,7 +10,7 @@ Compiler from EMF.xmi and OCL.atl to CSP.choco
 - Save(xmi)
 
 ## 2 Compliers:
-- XMI2Choco : which makes a Choco Model from an XMI file 
+- XMI2Choco : which makes a Choco Model from an XMI file (Can solve after this comiplation, to check against meta-model)
 - OCL2Choco : which adds to the Choco Model from an OCL file
 
 ## .var() Annotation
@@ -25,7 +25,7 @@ You can annotate different models (.xcore, .xmi, .atl) to guide compilation
 meta-model in xcore
 ```xcore
 class Object {
-  attrib : int
+  attrib : int @var("N++", const)
   ref : reference[0-5] Object
 }
 ```
@@ -57,7 +57,7 @@ this is also a bit pseudocodey for now
 [See navCSP_SubSetSum for details](https://github.com/ArtemisLemon/navCSP_SubsetSum)
 
 
-## Quick Links for AIMT Meetings
+## Quick Links
 - [OCL2Choco](https://github.com/ArtemisLemon/OOCP/blob/master/lib/src/main/java/org/uml2choco/atlocl2choco/OCL2Choco.java)
 - [XMI2Choco](https://github.com/ArtemisLemon/OOCP/blob/master/lib/src/main/java/org/uml2choco/xmi2choco/XMI2Choco.java)
 - [OCLinChoco](https://github.com/ArtemisLemon/OCLinChoco)
@@ -67,4 +67,4 @@ this is also a bit pseudocodey for now
 - [ATL lang](https://wiki.eclipse.org/ATL/User_Guide_-_The_ATL_Language)
 - [ATL API](https://help.eclipse.org/latest/index.jsp?topic=%2Forg.eclipse.m2m.atl.doc%2Fguide%2Fdeveloper%2FATL+Developer+Guide.html)
 - [Ecore API](https://download.eclipse.org/modeling/emf/emf/javadoc/2.11/org/eclipse/emf/ecore/package-summary.html)
-- [Var&navCSP overleaf](https://www.overleaf.com/project/66d81a0bd3edfa84f15b717b)
+<!-- - [Var&navCSP overleaf](https://www.overleaf.com/project/66d81a0bd3edfa84f15b717b) -->
