@@ -1,6 +1,7 @@
 package org.uml2choco.atlocl2choco;
 
 import org.uml2choco.Context;
+import org.oclinchoco.CSP;
 import org.oclinchoco.NavCSP;
 
 
@@ -31,11 +32,12 @@ public class OCL2Choco {
         Context cc = compile(n.getSource());
         String prop = n.getName();
 
+        CSP csp = c.csp();
         //Property Access
-        if(cc.isSelf()) return new Context(c, c.getRefTable(prop).AdjList(cc.getID()));
+        if(cc.isSelf()) return new Context(c, csp.getRefTable(prop).AdjList(cc.getID()));
 
         //Variable Navigation
-        NavCSP nav = new NavCSP(c.csp(),cc.getSource(),c.getNavTable(prop));
+        NavCSP nav = new NavCSP(csp,cc.getSource(),csp.getNavTable(prop));
         //cc.getSource() get the result as Source from the context below, top of stack? but only need to keep last Object so.. acc?
         //c.NavProp(prop) finds in the csp the Property Table of Variable or Constant IntVars, this shouldn't change from the the xmi2csp compilation so can use downward context
 
