@@ -11,12 +11,34 @@ plugins {
 }
 
 repositories {
-    // Use Maven Central for resolving dependencies.
     mavenCentral()
+    maven {
+        url "https://repo1.maven.org/maven2/"
+    }
+    maven {
+        url "https://repo.eclipse.org/content/repositories/atl-releases/"
+    }
 }
 
 dependencies {
     implementation project(':OCLinChoco:lib')
+
+    implementation "com.google.guava:guava:+"    
+
+    //Source ATL(OCL)
+    implementation "org.eclipse.emf:org.eclipse.emf.ecore:+"
+    implementation "org.eclipse.m2m.atl:org.eclipse.m2m.atl.engine:4.8.0"
+    implementation "org.eclipse.m2m.atl:org.eclipse.m2m.atl.common:4.8.0"
+    implementation "org.eclipse.m2m.atl:org.eclipse.m2m.atl.dsls:4.8.0"
+    implementation "org.eclipse.m2m.atl:org.eclipse.m2m.atl.emftvm.compiler:4.8.0"
+    
+    // //Source xcore(UML)
+    // implementation "org.eclipse.xtext:org.eclipse.xtext:+"
+    // implementation 'org.eclipse.emf:org.eclipse.emf.ecore.xcore.lib:+'
+
+    // xtextLanguages('org.eclipse.emf:org.eclipse.emf.ecore.xcore:+') {
+    //     exclude group: 'org.antlr', module: 'antlr-runtime'
+    // }
 }
 
 // Apply a specific Java toolchain to ease working on different environments.
