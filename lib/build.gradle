@@ -27,10 +27,10 @@ dependencies {
 
     //Source ATL(OCL)
     implementation "org.eclipse.emf:org.eclipse.emf.ecore:+"
-    implementation "org.eclipse.m2m.atl:org.eclipse.m2m.atl.engine:4.8.0"
     implementation "org.eclipse.m2m.atl:org.eclipse.m2m.atl.common:4.8.0"
-    implementation "org.eclipse.m2m.atl:org.eclipse.m2m.atl.dsls:4.8.0"
-    implementation "org.eclipse.m2m.atl:org.eclipse.m2m.atl.emftvm.compiler:4.8.0"
+    implementation "org.eclipse.m2m.atl:org.eclipse.m2m.atl.engine:4.8.0"
+    // implementation "org.eclipse.m2m.atl:org.eclipse.m2m.atl.dsls:4.8.0"
+    // implementation "org.eclipse.m2m.atl:org.eclipse.m2m.atl.emftvm.compiler:4.8.0"
     
     // //Source xcore(UML)
     // implementation "org.eclipse.xtext:org.eclipse.xtext:+"

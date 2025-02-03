@@ -1,17 +1,11 @@
 package org.uml2choco.atlocl2choco;
 
-import org.oclinchoco.NavCSP;
-import org.oclinchoco.nodecsp.ArithmNode;
-import org.oclinchoco.nodecsp.SizeNode;
-import org.oclinchoco.nodecsp.VarNode;
-import org.oclinchoco.nodecsp.VariableExpNode;
-import org.oclinchoco.source.PtrSource;
-import org.oclinchoco.source.Source;
-import org.oclinchoco.source.VarSource;
 import org.uml2choco.EMFCSP;
 import org.uml2choco.atlocl2choco.context.Context;
 import org.uml2choco.atlocl2choco.context.DContext;
 import org.uml2choco.atlocl2choco.context.UContext;
+
+// OCL Symbols
 import org.eclipse.m2m.atl.common.OCL.BooleanType;
 import org.eclipse.m2m.atl.common.OCL.IntegerExp;
 import org.eclipse.m2m.atl.common.OCL.NavigationOrAttributeCallExp;
@@ -21,6 +15,19 @@ import org.eclipse.m2m.atl.common.OCL.OperatorCallExp;
 import org.eclipse.m2m.atl.common.OCL.OperationCallExp;
 import org.eclipse.m2m.atl.common.OCL.VariableExp;
 
+// OCL Semantics in Choco
+import org.oclinchoco.NavCSP;
+import org.oclinchoco.nodecsp.ArithmNode;
+import org.oclinchoco.nodecsp.SizeNode;
+import org.oclinchoco.nodecsp.VarNode;
+import org.oclinchoco.nodecsp.VariableExpNode;
+import org.oclinchoco.source.PtrSource;
+import org.oclinchoco.source.Source;
+import org.oclinchoco.source.VarSource;
+
+
+// This Class provides the methods to interpret OCL Expressions using OCLinChoco models
+// For each object in the OCL AST, an OCLinChoco object is instanciated
 public class OCL2Choco {
 
     //SwitchBoard
@@ -101,7 +108,7 @@ public class OCL2Choco {
     }
 
 
-    
+
 
     static private UContext compileSize(OperationCallExp o, DContext c){
         UContext cc = compile(o.getSource(),c);
