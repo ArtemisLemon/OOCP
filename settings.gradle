@@ -11,5 +11,5 @@ plugins {
 }
 
 rootProject.name = 'UML2Choco'
-include('lib')
-include('OCLinChoco:lib')
+include('OCL2Choco')
+include('OCLinChoco')
