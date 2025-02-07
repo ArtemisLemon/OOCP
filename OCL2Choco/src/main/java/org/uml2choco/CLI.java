@@ -20,5 +20,8 @@ public class CLI {
         System.out.println(cli.metamodel);
         System.out.println(cli.model);
         System.out.println(cli.ocl);
+
+        EMF2Choco compiler = new EMF2Choco();
+        compiler.run(cli.metamodel,cli.model,cli.ocl);
     }
 }

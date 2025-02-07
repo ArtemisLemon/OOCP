@@ -14,7 +14,7 @@ import org.eclipse.emf.ecore.EReference;
 import com.google.common.collect.HashBasedTable;
 import com.google.common.collect.Table;
 
-//This class maps an EMF instance to an oclinchoco.CSP
+//This class maps an EMF instance to an oclinchoco.CSP view
 public class EMFCSP extends CSP{
     HashMap<String,EReference> nav2ref; //from NavOrAttribCallExp.getName()
     HashMap<EReference,ReferenceTable> referencetables;
