@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<zooModel:Park xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:zooModel="http://www.example.org/zooModel">
+  <species name="Lion"/>
+  <species name="Gnou"/>
+  <animal cage="//@cage.0" species="//@species.1" name="gNathan"/>
+  <animal cage="//@cage.0" species="//@species.1" name="gNathalie"/>
+  <animal species="//@species.0" name="Lea"/>
+  <animal species="//@species.0" name="Leo"/>
+  <animal species="//@species.0" name="Lou"/>
+  <cage animals="//@animal.1 //@animal.0" capacity="2"/>
+  <cage capacity="4"/>
+</zooModel:Park>

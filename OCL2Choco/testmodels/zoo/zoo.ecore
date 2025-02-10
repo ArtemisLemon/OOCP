@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ecore:EPackage xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xmlns:ecore="http://www.eclipse.org/emf/2002/Ecore" name="zooModel" nsURI="http://www.example.org/zooModel" nsPrefix="zooModel">
+  <eClassifiers xsi:type="ecore:EClass" name="Cage">
+    <eStructuralFeatures xsi:type="ecore:EReference" name="animals" upperBound="10"
+        eType="#//Animal" eOpposite="#//Animal/cage"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="capacity" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EInt"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="Animal">
+    <eStructuralFeatures xsi:type="ecore:EReference" name="cage" lowerBound="1" eType="#//Cage"
+        eOpposite="#//Cage/animals"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="species" lowerBound="1" eType="#//Species"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="name" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="Species">
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="name" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="Park">
+    <eStructuralFeatures xsi:type="ecore:EReference" name="species" upperBound="-1"
+        eType="#//Species" containment="true"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="animal" upperBound="-1"
+        eType="#//Animal" containment="true"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="cage" upperBound="-1" eType="#//Cage"
+        containment="true"/>
+  </eClassifiers>
+</ecore:EPackage>
