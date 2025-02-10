@@ -18,9 +18,11 @@ import org.eclipse.m2m.atl.common.OCL.VariableExp;
 // OCL Semantics in Choco
 import org.oclinchoco.NavCSP;
 import org.oclinchoco.nodecsp.ArithmNode;
+import org.oclinchoco.nodecsp.AsSetNode;
 import org.oclinchoco.nodecsp.SizeNode;
 import org.oclinchoco.nodecsp.VarNode;
 import org.oclinchoco.nodecsp.VariableExpNode;
+import org.oclinchoco.source.OccSource;
 import org.oclinchoco.source.PtrSource;
 import org.oclinchoco.source.Source;
 import org.oclinchoco.source.VarSource;
@@ -49,7 +51,7 @@ public class OCL2Choco {
     static private UContext compile(OperatorCallExp o, DContext c){
         // if(o.getOperationName()=="var") return compileVar(o,c);
         switch(o.getOperationName()){
-            case "=<" :
+            case "<=" :
             case "<" :
             case ">" :
                 return compileArithm(o,c);
@@ -63,7 +65,8 @@ public class OCL2Choco {
         switch(o.getOperationName()){
             case "size" :
                 return compileSize(o,c);
-            case "var" : 
+            case "asSet" :
+                return compileAsSet(o,c);
             default :
                 throw new UnsupportedOperationException("don't support " + o.getOperationName());
         }
@@ -90,7 +93,6 @@ public class OCL2Choco {
         //compile source & get prop name
         UContext cc = compile(n.getSource(),c);
         String prop = n.getName();
-
         EMFCSP csp = c.getCSP();
 
         //Property Access (TODO? it can maybe be skiped);
@@ -113,7 +115,7 @@ public class OCL2Choco {
     static private UContext compileSize(OperationCallExp o, DContext c){
         UContext cc = compile(o.getSource(),c);
 
-        SizeNode node = new SizeNode(c.getCSP(), (PtrSource)cc.getSource());
+        SizeNode node = new SizeNode(c.getCSP(), (OccSource)cc.getSource());
 
         return new UContext(c.getCSP(), node);
     }
@@ -135,7 +137,13 @@ public class OCL2Choco {
         return new UContext(c.getCSP(), node);
     }
 
+    static private UContext compileAsSet(OperationCallExp o, DContext c){
+        UContext cc = compile(o.getSource(), c);
 
+        AsSetNode node = new AsSetNode(c.getCSP(), (PtrSource)cc.getSource());        
+
+        return new UContext(c.getCSP(), node);
+    }
 
 
     // static private Context compileVar(OperatorCallExp o, Context c){
