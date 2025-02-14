@@ -2,8 +2,17 @@ module Zoo2Config;
 
 create OUT: Zoo from In : Zoo;
 
--- helper context Zoo!Cage def: cageCapacity(): Boolean = 
---     self.animals.size() <= self.capacity;
+helper context Zoo!Cage def: cageCapacity(): Boolean = 
+    self.animals.size() <= self.capacity;
 
 helper context Zoo!Cage def: cageSpeciesLimit(): Boolean = 
     self.animals.species.asSet().size() <= 1;
+
+-- helper context Zoo!Cage def: speciesQuery(): Boolean = 
+--     self.animals.speciea;
+
+-- helper context Zoo!Cage def: animalsQuery(): Boolean = 
+--     self.animals.size();
+
+helper context Zoo!Cage def: randomOp(): Boolean = 
+    self.capacity.min(2) + self.capacity.max(2);

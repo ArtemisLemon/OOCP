@@ -8,5 +8,5 @@
   <animal species="//@species.0" name="Leo"/>
   <animal species="//@species.0" name="Lou"/>
   <cage animals="//@animal.1 //@animal.0" capacity="2"/>
-  <cage capacity="4"/>
+  <cage animals="//@animal.3 //@animal.2 //@animal.4" capacity="4"/>
 </zooModel:Park>
