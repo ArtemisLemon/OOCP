@@ -1,36 +1,30 @@
 package org.uml2choco.atlocl2choco;
 
 import org.uml2choco.EMFCSP;
-import org.uml2choco.atlocl2choco.context.Context;
 import org.uml2choco.atlocl2choco.context.DContext;
 import org.uml2choco.atlocl2choco.context.UContext;
 
 // OCL Symbols
-import org.eclipse.m2m.atl.common.OCL.BooleanType;
 import org.eclipse.m2m.atl.common.OCL.IntegerExp;
 import org.eclipse.m2m.atl.common.OCL.NavigationOrAttributeCallExp;
-import org.eclipse.m2m.atl.common.OCL.OclAnyType;
 import org.eclipse.m2m.atl.common.OCL.OclExpression;
 import org.eclipse.m2m.atl.common.OCL.OperatorCallExp;
 import org.eclipse.m2m.atl.common.OCL.OperationCallExp;
 import org.eclipse.m2m.atl.common.OCL.VariableExp;
-
-// OCL Semantics in Choco
-import org.oclinchoco.NavCSP;
-import org.oclinchoco.nodecsp.ArithmNode;
+import org.oclinchoco.navigation.NavCSP;
+import org.oclinchoco.nodecsp.RelationalNode;
+import org.oclinchoco.nodecsp.ArithmeticNode;
 import org.oclinchoco.nodecsp.AsSetNode;
 import org.oclinchoco.nodecsp.SizeNode;
 import org.oclinchoco.nodecsp.VarNode;
 import org.oclinchoco.nodecsp.VariableExpNode;
-import org.oclinchoco.source.OccSource;
 import org.oclinchoco.source.PtrSource;
-import org.oclinchoco.source.Source;
 import org.oclinchoco.source.VarSource;
 
 
 // This Class provides the methods to interpret OCL Expressions using OCLinChoco models
 // For each object in the OCL AST, an OCLinChoco object is instanciated
-public class OCL2Choco {
+public class ATLOCL2Choco {
 
     //SwitchBoard
 
@@ -52,12 +46,25 @@ public class OCL2Choco {
         // if(o.getOperationName()=="var") return compileVar(o,c);
         switch(o.getOperationName()){
             case "<=" :
+            case ">=" :
             case "<" :
             case ">" :
-                return compileArithm(o,c);
+            case "=" :
+            case "<>" :
+                return compileRelational(o,c);
+            case "+" :
+            case "-" :
+            case "/" :
+            case "*" :
+            // case "min" :
+            // case "max" :
+            // case "mod" :
+            // case "pow" :
+            // case "dist" :
+                return compileArithmetic(o,c);
             case "var" : 
             default :
-                throw new UnsupportedOperationException("don't support " + o.getOperationName());
+                throw new UnsupportedOperationException("don't support Operator " + o.getOperationName());
         }
     }
 
@@ -67,8 +74,19 @@ public class OCL2Choco {
                 return compileSize(o,c);
             case "asSet" :
                 return compileAsSet(o,c);
+
+            case "min" :
+            case "max" :
+            case "mod" :
+            case "pow" :
+            case "dist" :
+                return compileArithmetic(o,c);
+            case "abs":
+            case "neg":
+            // case "sqr":
+                return compileArithmeticOne(o, c);
             default :
-                throw new UnsupportedOperationException("don't support " + o.getOperationName());
+                throw new UnsupportedOperationException("don't support Operation " + o.getOperationName());
         }
     }
 
@@ -98,7 +116,7 @@ public class OCL2Choco {
         //Property Access (TODO? it can maybe be skiped);
 
         //Variable Navigation
-        NavCSP nav = new NavCSP(csp,(PtrSource)cc.getSource(),csp.getNavTable(prop));
+        NavCSP nav = NavCSP.makeNavCSP(csp,(PtrSource)cc.getSource(),csp.getNavTable(prop));
         //cc.getSource() get the result as Source from the context below, top of stack? but only need to keep last Object so.. acc?
         //c.NavProp(prop) finds in the csp the Property Table of Variable or Constant IntVars, this shouldn't change from the the xmi2csp compilation so can use downward context
 
@@ -115,8 +133,7 @@ public class OCL2Choco {
     static private UContext compileSize(OperationCallExp o, DContext c){
         UContext cc = compile(o.getSource(),c);
 
-        SizeNode node = new SizeNode(c.getCSP(), (OccSource)cc.getSource());
-
+        SizeNode node = SizeNode.create(c.getCSP(), cc.getSource());
         return new UContext(c.getCSP(), node);
     }
 
@@ -126,16 +143,35 @@ public class OCL2Choco {
         return new UContext(c.getCSP(), new VariableExpNode(c.getCSP(), self_value));
     }
 
-    static private UContext compileArithm(OperatorCallExp o,DContext c){
+    static private UContext compileRelational(OperatorCallExp o,DContext c){
         UContext ccleft = compile(o.getSource(),c);
         UContext ccright = compile(o.getArguments().get(0),c);
         
-        VarSource left = (VarSource)ccleft.getSource();
-        VarSource right = (VarSource)ccright.getSource();
-        ArithmNode node = new ArithmNode(c.getCSP(), left, right, o.getOperationName());
+        String opString = o.getOperationName();
+        if(opString.equals("<>")) opString="!=";
+        
+        RelationalNode node = new RelationalNode(c.getCSP(), (VarSource)ccleft.getSource(), (VarSource)ccright.getSource(), opString);
 
         return new UContext(c.getCSP(), node);
     }
+
+    static private UContext compileArithmeticOne(OperationCallExp o,DContext c){
+        UContext ccleft = compile(o.getSource(),c);
+        
+        ArithmeticNode node = new ArithmeticNode(c.getCSP(), (VarSource)ccleft.getSource(), o.getOperationName());
+
+        return new UContext(c.getCSP(), node);
+    }
+
+    static private UContext compileArithmetic(OperationCallExp o,DContext c){
+        UContext ccleft = compile(o.getSource(),c);
+        UContext ccright = compile(o.getArguments().get(0),c);
+        
+        ArithmeticNode node = new ArithmeticNode(c.getCSP(), (VarSource)ccleft.getSource(), (VarSource)ccright.getSource(), o.getOperationName());
+
+        return new UContext(c.getCSP(), node);
+    }
+
 
     static private UContext compileAsSet(OperationCallExp o, DContext c){
         UContext cc = compile(o.getSource(), c);

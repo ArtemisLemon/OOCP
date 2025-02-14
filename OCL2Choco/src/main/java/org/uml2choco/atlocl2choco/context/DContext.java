@@ -3,7 +3,8 @@ package org.uml2choco.atlocl2choco.context;
 import org.eclipse.emf.ecore.EObject;
 import org.uml2choco.EMFCSP;
 
-public class DContext extends Context {
+public class DContext {
+    EMFCSP csp;
     EObject self;
 
     public DContext(EMFCSP csp, EObject slf){
@@ -11,5 +12,6 @@ public class DContext extends Context {
         this.self=slf;
     }
 
+    public EMFCSP getCSP(){return csp;}
     public EObject getSelf(){return self;}
 }
