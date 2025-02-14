@@ -1,9 +1,9 @@
 package org.uml2choco;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 
+import org.chocosolver.solver.variables.IntVar;
 import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.EObject;
@@ -12,7 +12,10 @@ import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.m2m.atl.common.ATL.Helper;
 import org.eclipse.m2m.atl.common.ATL.Module;
 import org.eclipse.m2m.atl.common.OCL.Operation;
-import org.uml2choco.atlocl2choco.OCL2Choco;
+import org.oclinchoco.source.OccSource;
+import org.oclinchoco.source.PtrSource;
+import org.oclinchoco.source.VarSource;
+import org.uml2choco.atlocl2choco.ATLOCL2Choco;
 import org.uml2choco.atlocl2choco.context.DContext;
 import org.uml2choco.atlocl2choco.context.UContext;
 import org.uml2choco.utilities.EMF2ChocoIO;
@@ -48,6 +51,7 @@ public class EMF2Choco {
         csp.printJustTheTables();
 
         // OCLCSP
+        List<UContext> results = new ArrayList<>();
         if(c!=null){
             System.out.println("Building OCL CSP");
             constraints = EMF2ChocoIO.loadATL(c);
@@ -55,6 +59,7 @@ public class EMF2Choco {
             //     System.out.println(h.getDefinition().getContext_().getContext_().getName());
             // }
     
+
             for(EMFCSP.EMFCSPObject o : csp.getEMFCSPObjects()){
                 String tomatch = o.getEClass().getName();
                 System.out.println("Looking for constraints for "+tomatch+csp.getObjPtr(o.getEObject()));
@@ -65,7 +70,8 @@ public class EMF2Choco {
                         DContext start = new DContext(csp, o.getEObject());
                         Operation op = (Operation)h.getDefinition().getFeature();
                         System.out.println("applying "+ op.getName() +" to "+classStr+csp.getObjPtr(o.getEObject()));
-                        UContext result = OCL2Choco.compile(op.getBody(), start);
+                        UContext result = ATLOCL2Choco.compile(op.getBody(), start);
+                        results.add(result);
                     }
                 } 
             }
@@ -82,8 +88,24 @@ public class EMF2Choco {
         System.out.println("Solving");
         csp.model().getSolver().solve();
         csp.model().getSolver().printStatistics();
-        // System.out.println(csp.model());
         csp.printJustTheTables();
+        for(UContext res : results){
+            switch (res.getSource()) {
+                case PtrSource ptr:
+                    for(IntVar v: ptr.pointers()) System.out.print(v.getValue()+" ");
+                    break;
+                case OccSource occ:
+                    for(IntVar o: occ.occurences()) System.out.print(o.getValue()+" ");
+                    break;
+                case VarSource v:
+                    System.out.print(v.var().getValue()+" ");
+                    break;
+                default:
+                    break;
+            }
+            System.out.println();
+        }
+        // System.out.println(csp.model());
         // csp.model().getSolver().printStatistics();
 
         // EMF2ChocoIO.saveXMI("solved"+m,rootObject);
