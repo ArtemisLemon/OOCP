@@ -1,8 +1,6 @@
 package org.uml2choco.xmi2choco;
 
-import org.oclinchoco.ReferenceTable;
 import org.uml2choco.EMFCSP;
-import org.uml2choco.atlocl2choco.context.Context;
 
 import com.google.common.collect.HashBasedTable;
 import com.google.common.collect.Table;
@@ -13,11 +11,9 @@ import java.util.List;
 
 import org.eclipse.emf.common.util.BasicEList;
 import org.eclipse.emf.common.util.EList;
-import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.*;
-import org.eclipse.emf.ecore.resource.Resource;
-import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl;
-import org.eclipse.emf.ecore.xmi.impl.XMIResourceFactoryImpl;
+import org.oclinchoco.property.ReferenceTable;
+import org.oclinchoco.property.SingleIntTable;
 
 public class XMI2Choco {
 
@@ -48,6 +44,28 @@ public class XMI2Choco {
                 classptr2object.put(iClass,j+1,iInstances.get(j));
                 csp.addObjPtr(iInstances.get(j), j+1);
                 eobjects.add(iInstances.get(j));
+            }
+        }
+
+        // Identify the Attributes of the objects
+        System.out.println("Loading Attributes");
+        List<EAttribute> eattributes = new ArrayList<>();
+        HashMap<EClass,EList<EAttribute>> class2attributes = new HashMap<>();
+        Table<EObject,String,Integer> objattrib2int = HashBasedTable.create();
+
+
+        for(EClass c : eclasses){
+            class2attributes.put(c,c.getEAttributes());
+            for(EAttribute a : c.getEAttributes()){
+                if(!a.getEAttributeType().getInstanceClassName().equals("int")) continue;
+                eattributes.add(a);
+                int rows = class2objects.get(c).size();
+                System.out.println("Building Attribute Table for "+a.getName());
+                csp.addAttributeTable(a, rows);
+
+                for(EObject e : class2objects.get(c)){
+                    objattrib2int.put(e, a.getName(), (int)e.eGet(a));
+                }
             }
         }
 
@@ -105,6 +123,8 @@ public class XMI2Choco {
                 }
         }
 
+        // csp.printJustTheTables();
+
         System.out.println("Recording EMFCSP Objects");
         for(EObject o : eobjects){
             // System.out.println(o.eClass().getName()+csp.getObjPtr(o));
@@ -115,7 +135,19 @@ public class XMI2Choco {
                 ref2objects.put(r,objref2objlist.get(o,r.getName()));
                 var2objects.put(r,csp.getRefTable(r.getName()).adjList(csp.getObjPtr(o)));
             }
-            csp.addEMFCSPObject(o,erefs,ref2objects,var2objects);
+
+            EList<EAttribute> eatts = class2attributes.get(o.eClass());
+            EList<EAttribute> modeledatts = new BasicEList<>();
+            HashMap<EAttribute,Integer> att2int = new HashMap<>();
+            HashMap<EAttribute,SingleIntTable.SingleIntAttribute> att2var =new HashMap<>();
+            for(EAttribute a : eatts){
+                if(!a.getEAttributeType().getInstanceClassName().equals("int")) continue;
+                modeledatts.add(a);
+                att2int.put(a, objattrib2int.get(o,a.getName()));
+                att2var.put(a,csp.getAttribTable(a.getName()).singleattribute(csp.getObjPtr(o)));
+            }
+
+            csp.addEMFCSPObject(o,erefs,ref2objects,var2objects,modeledatts,att2int,att2var);
         }
 
         System.out.println("Loading data for EMFCSP Objects");
