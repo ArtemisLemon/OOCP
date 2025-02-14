@@ -54,10 +54,6 @@ import org.eclipse.m2m.atl.emftvm.compiler.AtlResourceFactoryImpl;
 public class EMF2ChocoIO {
     static ResourceSetImpl rs;
 
-    // public EMF2ChocoIO(){
-    //     initResourceSet();
-    // }
-
     static public void initResourceSet(){
             rs = new ResourceSetImpl();
             rs.getResourceFactoryRegistry().getExtensionToFactoryMap().put("ecore", new EcoreResourceFactoryImpl());
