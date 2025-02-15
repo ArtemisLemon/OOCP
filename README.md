@@ -1,9 +1,9 @@
 
-<img src="readme/image.png" width=20% style="float: right;">
+<img src="readme/image.png" width=10% style="float: right;">
 
 # OOCP
 **Object Oriented _Constraint_ Programming**
-Interpreter from UML&OCL to CSP, using the semantics provided by [OCLinChoco](https://github.com/ArtemisLemon/OCLinChoco), modeled using the [Choco Solver](https://choco-solver.org/), to solve [Eclipse EMF]() models.
+Interpreter from UML&OCL to CSP, using the semantics provided by [OCLinChoco](https://github.com/ArtemisLemon/OCLinChoco), modeled using the [Choco Solver](https://choco-solver.org/), to solve [Eclipse EMF](https://projects.eclipse.org/projects/modeling.emf.emf) models.
 
 <!-- ## 2 Interpreters:
 - XMI2Choco : which makes a Choco Model from an XMI file 
@@ -71,3 +71,24 @@ You can annotate the .atl model to guide CSP building and solving:
 - no annotations does model validation and simple completion
 
 ## UML&OCL Coverage
+From an EMF instance we can model: 
+- References (containement coming soon)
+  - finite max cardinality
+  - ordered/unordered
+  - unique/nonunique
+- Int Attributes (int collections coming soon).
+
+**Modeling Tip:** the metamodel.ecore/model.xmi need to have a _root class/object_ which **contains** all the problem classes/objects. Constraints can't be written for that object, yet.
+
+For the OCL you write ATL `helper` using:
+- Navigation : `src.reference.attribute`
+- Arithmetic & Relational Operations
+- Collection Operations
+  - size()
+  - asSet()
+  - sum()
+  - includes() (coming Soon)
+
+**Modeling Tip :: Constraint Boilerplate:** `helper context Model!Class def: constraintName(): Boolean = OclExpression` using expressions highlighted in **green** below. 
+<img src="readme/coverage.png" width=100%>
+**Green Highlight:** Done. **Blue Highlight:** thinking about these, some just need to be written. Check branches of OCLinChoco. **Red Highlight:** You do it.
