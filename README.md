@@ -1,18 +1,14 @@
-# OOCP
-Object Oriented _Constraint_ Programming
 
-Interpreter from EMF.xmi and OCL.atl to CSP.choco, using the semantics provides by [OCLinChoco](https://github.com/ArtemisLemon/OCLinChoco).
+<img src="readme/image.png" width=20% style="float: right;">
+
+# OOCP
+**Object Oriented _Constraint_ Programming**
+Interpreter from UML&OCL to CSP, using the semantics provided by [OCLinChoco](https://github.com/ArtemisLemon/OCLinChoco), modeled using the [Choco Solver](https://choco-solver.org/), to solve [Eclipse EMF]() models.
 
 <!-- ## 2 Interpreters:
 - XMI2Choco : which makes a Choco Model from an XMI file 
 - OCL2Choco : which adds to the Choco Model from an OCL file -->
 
-<!-- ## .var() Annotation
-You can annotate different models (.xcore, .xmi, .atl) to guide compilation
-- src.var(prop, ...)
-- choose between optimisation, fixing, exploration, etc..
-- no annotations does model validation and simple completion
-- limit the scope of the solver on large models -->
 ## Quick Start
 ```
 git clone git@github.com:ArtemisLemon/OOCP.git
@@ -39,7 +35,7 @@ git submodule update --remote
  This model should conform to the [zoo.ecore](https://github.com/ArtemisLemon/OOCP/blob/master/OCL2Choco/testmodels/zoo/zoo.ecore) metamodel. But according to the metamodel the animals shoulds be in cages, and the model is missing that information. Using both the model and metamodel we make a Choco model of the instance.
 
 
-Eclipse provides graphical tools to make a metamodel.ecore
+Eclipse provides graphical tools to make a metamodel.ecore and model.xmi, and model transformation tools which can help with pre-processing.
 <img src="readme/zooecore.png" width=100%>
 
 ### [zoo.atl](https://github.com/ArtemisLemon/OOCP/blob/master/OCL2Choco/testmodels/zoo/zoo.atl) : Input Constraint Model
@@ -67,14 +63,11 @@ OCL can be used to describe additional constraints. The metamodel provides a fir
 </zooModel:Park>
 ```
 
-<!-- ## Quick Links
-- [OCL2Choco](https://github.com/ArtemisLemon/OOCP/blob/master/lib/src/main/java/org/uml2choco/atlocl2choco/OCL2Choco.java)
-- [XMI2Choco](https://github.com/ArtemisLemon/OOCP/blob/master/lib/src/main/java/org/uml2choco/xmi2choco/XMI2Choco.java)
-- [OCLinChoco](https://github.com/ArtemisLemon/OCLinChoco)
-- [OCLinChoco:RefTable](https://github.com/ArtemisLemon/OCLinChoco/blob/master/lib/src/main/java/org/oclinchoco/ReferenceTable.java)
-[OCLinChoco:NavCSP](https://github.com/ArtemisLemon/OCLinChoco/blob/master/lib/src/main/java/org/oclinchoco/NavCSP.java)
-- [OCL 2.4](https://www.omg.org/spec/OCL/2.4/)
-- [ATL lang](https://wiki.eclipse.org/ATL/User_Guide_-_The_ATL_Language)
-- [ATL API](https://help.eclipse.org/latest/index.jsp?topic=%2Forg.eclipse.m2m.atl.doc%2Fguide%2Fdeveloper%2FATL+Developer+Guide.html)
-- [Ecore API](https://download.eclipse.org/modeling/emf/emf/javadoc/2.11/org/eclipse/emf/ecore/package-summary.html)
-- [Var&navCSP overleaf](https://www.overleaf.com/project/66d81a0bd3edfa84f15b717b) -->
+## Future Work: .var() Annotation
+You can annotate the .atl model to guide CSP building and solving: 
+`src.var(prop, ...)`
+- choose between optimisation, fixing, exploration, etc..
+- limit the scope of the solver on large models
+- no annotations does model validation and simple completion
+
+## UML&OCL Coverage
