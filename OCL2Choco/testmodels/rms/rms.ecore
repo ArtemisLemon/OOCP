@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ecore:EPackage xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xmlns:ecore="http://www.eclipse.org/emf/2002/Ecore" name="rMSConfigurator" nsURI="http://www.example.org/rMSConfigurator"
+    nsPrefix="rMSConfigurator">
+  <eClassifiers xsi:type="ecore:EClass" name="Factory">
+    <eStructuralFeatures xsi:type="ecore:EReference" name="task" upperBound="-1" eType="#//Task"
+        containment="true"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="machines" upperBound="-1"
+        eType="#//Machines" containment="true"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="stage" upperBound="-1"
+        eType="#//Stage" containment="true"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="Stage">
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="maxMachines" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EInt"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="machines" upperBound="10"
+        eType="#//Machines" eOpposite="#//Machines/stage"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="tasks" upperBound="10" eType="#//Task"
+        eOpposite="#//Task/doneBy"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="Task">
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="Time" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EInt"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="canBeDoneBy" eType="#//Machines"
+        eOpposite="#//Machines/canDo"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="doneBy" lowerBound="1" eType="#//Stage"
+        eOpposite="#//Stage/tasks"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="name" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="Machines">
+    <eStructuralFeatures xsi:type="ecore:EReference" name="canDo" upperBound="10"
+        eType="#//Task" eOpposite="#//Task/canBeDoneBy"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="stage" eType="#//Stage"
+        eOpposite="#//Stage/machines"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="name" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+  </eClassifiers>
+</ecore:EPackage>

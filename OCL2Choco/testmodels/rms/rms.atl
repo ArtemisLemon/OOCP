@@ -1,0 +1,15 @@
+module RMS2Config;
+
+create OUT: RMS from In : RMS;
+
+-- helper context RMS!Stage def: MachineMatchTasks(): Boolean = 
+--     self.machines.canDo.includes(self.tasks);
+
+helper context RMS!Stage def: SameMachines(): Boolean = 
+    self.machines.asSet().size() <= 1;
+
+helper context RMS!Stage def: SpaceConstraint(): Boolean = 
+    self.machines.size() <= self.maxMachines;
+
+-- helper context RMS!Stage def: TimeConstraint(): Boolean = 
+--     self.tasks.time.sum() <= 10;
