@@ -15,6 +15,7 @@ import org.eclipse.m2m.atl.common.OCL.Operation;
 import org.oclinchoco.source.OccSource;
 import org.oclinchoco.source.PtrSource;
 import org.oclinchoco.source.VarSource;
+import org.oclinchoco.source.VarsSource;
 import org.uml2choco.atlocl2choco.ATLOCL2Choco;
 import org.uml2choco.atlocl2choco.context.DContext;
 import org.uml2choco.atlocl2choco.context.UContext;
@@ -38,7 +39,7 @@ public class EMF2Choco {
     
     EList<EClass> classes;
 
-    public void run(String mm, String m, String c){
+    public void run(String mm, String m, String c, String out){
         EMF2ChocoIO.initResourceSet();
         csp = new EMFCSP();
         
@@ -97,6 +98,9 @@ public class EMF2Choco {
                 case OccSource occ:
                     for(IntVar o: occ.occurences()) System.out.print(o.getValue()+" ");
                     break;
+                case VarsSource vars:
+                    for(IntVar v: vars.vars()) System.out.print(v.getValue()+" ");
+                    break;
                 case VarSource v:
                     System.out.print(v.var().getValue()+" ");
                     break;
@@ -108,6 +112,10 @@ public class EMF2Choco {
         // System.out.println(csp.model());
         // csp.model().getSolver().printStatistics();
 
-        // EMF2ChocoIO.saveXMI("solved"+m,rootObject);
+        for(EMFCSP.EMFCSPObject o : csp.getEMFCSPObjects()){
+            o.variables2data();
+        }
+
+        EMF2ChocoIO.saveXMI(out,rootObject);
     }
 }

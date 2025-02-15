@@ -5,10 +5,15 @@ import org.oclinchoco.navigation.NavTable;
 import org.oclinchoco.property.ReferenceTable;
 import org.oclinchoco.property.SingleIntTable;
 
+import com.google.common.collect.HashBasedTable;
+import com.google.common.collect.Table;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
+import org.chocosolver.solver.variables.IntVar;
+import org.eclipse.emf.common.util.BasicEList;
 import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.ecore.EAttribute;
 import org.eclipse.emf.ecore.EClass;
@@ -31,6 +36,7 @@ public class EMFCSP extends CSP{
     HashMap<String,NavTable> navtables;
     //UML View
     List<EMFCSPObject> objects;
+    Table<EClass,Integer,EObject> classPtr2Obj;
 
     public EMFCSP(){
         referencetables = new HashMap<>();
@@ -40,7 +46,10 @@ public class EMFCSP extends CSP{
 
         objects = new ArrayList<>();
         tablenames = new ArrayList<>();
+        classPtr2Obj = HashBasedTable.create();
     }
+
+    public void setClassPtr2Object(Table<EClass,Integer,EObject> table){classPtr2Obj=table;}
 
     public int getObjPtr(EObject o){
         return objPtrVals.get(o);
@@ -133,7 +142,25 @@ public class EMFCSP extends CSP{
                 variable.loadData(data);
             }
         }
-        public void variables2data(){}
+        public void variables2data(){
+            System.out.println("moving data from solver to instance");
+            for(EReference r : references){
+                System.out.println("Reference "+r.getName()+":"+r.getEReferenceType().getName());
+                EList<EObject> buff = new BasicEList<>();
+                int[] data = link_variables.get(r).getData();
+                for(int i=0; i<data.length;i++){
+                    if(data[i]==nullptr().getValue()) continue;
+                    buff.add(classPtr2Obj.get(r.getEReferenceType(), data[i]));
+                }
+                System.out.println(buff);
+                // for(EObject o : buff) System.out.println(o);
+
+                if(!buff.isEmpty()){
+                    if(r.getUpperBound()==1) emfobject.eSet(r, buff.get(0));
+                    else emfobject.eSet(r, buff);
+                }
+            }
+        }
     }
 
     public void addEMFCSPObject(EObject e,

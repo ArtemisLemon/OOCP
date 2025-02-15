@@ -46,6 +46,7 @@ public class XMI2Choco {
                 eobjects.add(iInstances.get(j));
             }
         }
+        csp.setClassPtr2Object(classptr2object);
 
         // Identify the Attributes of the objects
         System.out.println("Loading Attributes");
