@@ -7,12 +7,3 @@ helper context Zoo!Cage def: cageCapacity(): Boolean =
 
 helper context Zoo!Cage def: cageSpeciesLimit(): Boolean = 
     self.animals.species.asSet().size() <= 1;
-
--- helper context Zoo!Cage def: speciesQuery(): Boolean = 
---     self.animals.speciea;
-
--- helper context Zoo!Cage def: animalsQuery(): Boolean = 
---     self.animals.size();
-
-helper context Zoo!Cage def: randomOp(): Boolean = 
-    self.capacity.min(2) + self.capacity.max(2);
