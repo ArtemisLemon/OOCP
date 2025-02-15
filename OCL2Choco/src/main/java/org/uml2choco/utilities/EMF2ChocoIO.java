@@ -116,6 +116,7 @@ public class EMF2ChocoIO {
         res.getContents().add(rootObj);
         try{
             res.save(null);
+            System.out.println("\n Solution at: "+path);
         } catch (Exception e) {
             System.out.println("Problem Saving:\n"+e);
         }

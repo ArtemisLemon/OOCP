@@ -61,7 +61,7 @@ public class XMI2Choco {
                 if(!a.getEAttributeType().getInstanceClassName().equals("int")) continue;
                 eattributes.add(a);
                 int rows = class2objects.get(c).size();
-                System.out.println("Building Attribute Table for "+a.getName());
+                // System.out.println("Building Attribute Table for "+a.getName());
                 csp.addAttributeTable(a, rows);
 
                 for(EObject e : class2objects.get(c)){
@@ -86,7 +86,7 @@ public class XMI2Choco {
                 ereferences.add(r);
                 int src_count = class2objects.get(c).size();
                 int tgt_count = class2objects.get(r.getEReferenceType()).size();
-                System.out.println("Building RefTable for "+r.getName()+" : "+c.getName()+"->"+r.getEReferenceType().getName());
+                // System.out.println("Building RefTable for "+r.getName()+" : "+c.getName()+"->"+r.getEReferenceType().getName());
                 csp.addReferenceTable(r, src_count, tgt_count);
                 
                 // classref2reftableinfo.put(c,r, info); //With this we can make the RefTables
@@ -118,7 +118,7 @@ public class XMI2Choco {
         for(EReference r : ereferences){
             if(r.getEOpposite()!=null)
                 if(appliedOpposite.contains(r.getEOpposite())==false){
-                    System.out.println(r.getName()+" opposite "+r.getEOpposite().getName());
+                    // System.out.println(r.getName()+" opposite "+r.getEOpposite().getName());
                     ReferenceTable.Opposites(csp, csp.getRefTable(r.getName()), csp.getRefTable(r.getEOpposite().getName()));
                     appliedOpposite.add(r);
                 }

@@ -16,10 +16,12 @@ import org.oclinchoco.nodecsp.RelationalNode;
 import org.oclinchoco.nodecsp.ArithmeticNode;
 import org.oclinchoco.nodecsp.AsSetNode;
 import org.oclinchoco.nodecsp.SizeNode;
+import org.oclinchoco.nodecsp.SumNode;
 import org.oclinchoco.nodecsp.VarNode;
 import org.oclinchoco.nodecsp.VariableExpNode;
 import org.oclinchoco.source.PtrSource;
 import org.oclinchoco.source.VarSource;
+import org.oclinchoco.source.VarsSource;
 
 
 // This Class provides the methods to interpret OCL Expressions using OCLinChoco models
@@ -74,6 +76,8 @@ public class ATLOCL2Choco {
                 return compileSize(o,c);
             case "asSet" :
                 return compileAsSet(o,c);
+            case "sum" :
+                return compileSum(o,c);
 
             case "min" :
             case "max" :
@@ -111,6 +115,7 @@ public class ATLOCL2Choco {
         //compile source & get prop name
         UContext cc = compile(n.getSource(),c);
         String prop = n.getName();
+        // System.out.println("compiling NavOrAttribCallExp "+cc.getSource()+"->"+prop);
         EMFCSP csp = c.getCSP();
 
         //Property Access (TODO? it can maybe be skiped);
@@ -128,7 +133,14 @@ public class ATLOCL2Choco {
     }
 
 
+    static private UContext compileSum(OperationCallExp o, DContext c){
+        UContext cc = compile(o.getSource(),c);
+        VarsSource src = (VarsSource)cc.getSource();
 
+        SumNode node = new SumNode(c.getCSP(), src);
+
+        return new UContext(null, node);
+    }
 
     static private UContext compileSize(OperationCallExp o, DContext c){
         UContext cc = compile(o.getSource(),c);

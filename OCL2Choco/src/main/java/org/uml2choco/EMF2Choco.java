@@ -63,7 +63,7 @@ public class EMF2Choco {
 
             for(EMFCSP.EMFCSPObject o : csp.getEMFCSPObjects()){
                 String tomatch = o.getEClass().getName();
-                System.out.println("Looking for constraints for "+tomatch+csp.getObjPtr(o.getEObject()));
+                // System.out.println("Looking for constraints for "+tomatch+csp.getObjPtr(o.getEObject()));
     
                 for (var e : constraints.getElements()) if (e instanceof Helper h) {
                     String classStr = h.getDefinition().getContext_().getContext_().getName();
@@ -86,36 +86,38 @@ public class EMF2Choco {
             // DContext start = new DContext(csp, self);
             // UContext result = OCL2Choco.compile(null, start);
 
-        System.out.println("Solving");
-        csp.model().getSolver().solve();
-        csp.model().getSolver().printStatistics();
-        csp.printJustTheTables();
-        for(UContext res : results){
-            switch (res.getSource()) {
-                case PtrSource ptr:
-                    for(IntVar v: ptr.pointers()) System.out.print(v.getValue()+" ");
-                    break;
-                case OccSource occ:
-                    for(IntVar o: occ.occurences()) System.out.print(o.getValue()+" ");
-                    break;
-                case VarsSource vars:
-                    for(IntVar v: vars.vars()) System.out.print(v.getValue()+" ");
-                    break;
-                case VarSource v:
-                    System.out.print(v.var().getValue()+" ");
-                    break;
-                default:
-                    break;
+        System.out.println("\n\n .:Solving:.");
+        if(csp.model().getSolver().solve()){
+            System.out.println("SAT");
+            csp.printJustTheTables();
+            System.out.println("Vars at top of OCLExpression");
+            for(UContext res : results){
+                switch (res.getSource()) {
+                    case PtrSource ptr:
+                        for(IntVar v: ptr.pointers()) System.out.print(v.getValue()+" ");
+                        break;
+                    case OccSource occ:
+                        for(IntVar o: occ.occurences()) System.out.print(o.getValue()+" ");
+                        break;
+                    case VarsSource vars:
+                        for(IntVar v: vars.vars()) System.out.print(v.getValue()+" ");
+                        break;
+                    case VarSource v:
+                        System.out.print(v.var().getValue()+" ");
+                        break;
+                    default:
+                        break;
+                }
+                System.out.println();
             }
-            System.out.println();
-        }
-        // System.out.println(csp.model());
-        // csp.model().getSolver().printStatistics();
-
-        for(EMFCSP.EMFCSPObject o : csp.getEMFCSPObjects()){
-            o.variables2data();
-        }
-
-        EMF2ChocoIO.saveXMI(out,rootObject);
+            // System.out.println(csp.model());
+            // csp.model().getSolver().printStatistics();
+            for(EMFCSP.EMFCSPObject o : csp.getEMFCSPObjects()){
+                o.variables2data();
+            }
+    
+            EMF2ChocoIO.saveXMI(out,rootObject);
+        } else System.out.println("UNSAT");
+        csp.model().getSolver().printStatistics();
     }
 }

@@ -74,7 +74,7 @@ public class EMFCSP extends CSP{
         tablenames.add(eattrib.getName());
         navtables.put(eattrib.getName(), attribtable);
         attributetables.put(eattrib.getName(), attribtable);
-        System.out.println(eattrib.getName()+" "+attributetables.get(eattrib.getName()));
+        // System.out.println(eattrib.getName()+" "+attributetables.get(eattrib.getName()));
     }
 
     public SingleIntTable getAttribTable(String prop){
@@ -82,7 +82,7 @@ public class EMFCSP extends CSP{
     }
 
     public void addReferenceTable(EReference eref,int src_count, int tgt_count){
-        System.out.println("EMFCSP: addReferenceTable");
+        // System.out.println("EMFCSP: addReferenceTable");
         ReferenceTable refTable = new ReferenceTable(this,src_count,eref.getUpperBound(),eref.getLowerBound(),tgt_count);
         // nav2ref.put(eref.getName(),eref);
         // referencetables.put(eref, refTable);
@@ -136,23 +136,23 @@ public class EMFCSP extends CSP{
             }
 
             for(EAttribute a : attributes){
-                System.out.println("Loading "+a.getName());
+                // System.out.println("Loading "+a.getName());
                 int[] data = {fields.get(a)};
                 SingleIntTable.SingleIntAttribute variable = field_variables.get(a);
                 variable.loadData(data);
             }
         }
         public void variables2data(){
-            System.out.println("moving data from solver to instance");
+            // System.out.println("moving data from solver to instance");
             for(EReference r : references){
-                System.out.println("Reference "+r.getName()+":"+r.getEReferenceType().getName());
+                // System.out.println("Reference "+r.getName()+":"+r.getEReferenceType().getName());
                 EList<EObject> buff = new BasicEList<>();
                 int[] data = link_variables.get(r).getData();
                 for(int i=0; i<data.length;i++){
                     if(data[i]==nullptr().getValue()) continue;
                     buff.add(classPtr2Obj.get(r.getEReferenceType(), data[i]));
                 }
-                System.out.println(buff);
+                // System.out.println(buff);
                 // for(EObject o : buff) System.out.println(o);
 
                 if(!buff.isEmpty()){
