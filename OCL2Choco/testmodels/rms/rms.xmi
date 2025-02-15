@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <rMSConfigurator:Factory xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:rMSConfigurator="http://www.example.org/rMSConfigurator">
-  <task Time="3" name="Hammer Nail"/>
-  <task Time="1" name="Hit it a bit more"/>
+  <task time="3" name="Hammer Nail"/>
+  <task time="1" name="Hit it a bit more"/>
   <machines name="Hammer"/>
   <stage maxMachines="3"/>
 </rMSConfigurator:Factory>
