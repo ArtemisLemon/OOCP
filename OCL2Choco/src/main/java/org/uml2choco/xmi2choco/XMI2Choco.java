@@ -53,6 +53,7 @@ public class XMI2Choco {
         List<EAttribute> eattributes = new ArrayList<>();
         HashMap<EClass,EList<EAttribute>> class2attributes = new HashMap<>();
         Table<EObject,String,Integer> objattrib2int = HashBasedTable.create();
+        Table<EObject,String,EList<Integer>> objattrib2ints = HashBasedTable.create();
 
 
         for(EClass c : eclasses){
@@ -61,11 +62,30 @@ public class XMI2Choco {
                 if(!a.getEAttributeType().getInstanceClassName().equals("int")) continue;
                 eattributes.add(a);
                 int rows = class2objects.get(c).size();
-                // System.out.println("Building Attribute Table for "+a.getName());
-                csp.addAttributeTable(a, rows);
+                if(a.getUpperBound()==1){
+                    System.out.println("Building Single Int Table for "+a.getName()+" with "+rows+" rows");
+                    csp.addSingleIntTable(a, rows);
+    
+                    for(EObject e : class2objects.get(c)){
+                        objattrib2int.put(e, a.getName(), (int)e.eGet(a));
+                    }
+                } else {
+                    csp.addAttributeTable(a, rows, a.getLowerBound(), a.getUpperBound());
+                    for(EObject e : class2objects.get(c)){
 
-                for(EObject e : class2objects.get(c)){
-                    objattrib2int.put(e, a.getName(), (int)e.eGet(a));
+                        Object towrap = e.eGet(a);
+                        EList<Integer> wrapper = new BasicEList<>();
+                        if(towrap==null){
+                            // System.out.println("Found a ref to null\n");
+                        } else if(towrap instanceof Integer){
+                            // System.out.println("Found a ref to a single Object\n");
+                            wrapper.add((Integer)towrap);
+                        } else if(towrap instanceof EList<?>){
+                            // System.out.println("Found a ref to a List of Objects\n");
+                            wrapper = (EList<Integer>)towrap;
+                        }
+                        objattrib2ints.put(e,a.getName(), wrapper);
+                    }
                 }
             }
         }
@@ -124,7 +144,7 @@ public class XMI2Choco {
                 }
         }
 
-        // csp.printJustTheTables();
+        csp.printJustTheTables();
 
         System.out.println("Recording EMFCSP Objects");
         for(EObject o : eobjects){
@@ -145,7 +165,7 @@ public class XMI2Choco {
                 if(!a.getEAttributeType().getInstanceClassName().equals("int")) continue;
                 modeledatts.add(a);
                 att2int.put(a, objattrib2int.get(o,a.getName()));
-                att2var.put(a,csp.getAttribTable(a.getName()).singleattribute(csp.getObjPtr(o)));
+                att2var.put(a,csp.getSingleIntTable(a.getName()).singleattribute(csp.getObjPtr(o)));
             }
 
             csp.addEMFCSPObject(o,erefs,ref2objects,var2objects,modeledatts,att2int,att2var);
@@ -154,7 +174,7 @@ public class XMI2Choco {
         System.out.println("Loading data for EMFCSP Objects");
         for(EMFCSP.EMFCSPObject o : csp.getEMFCSPObjects()){
             // System.out.println("Loading data for "+o.emfobject);
-            o.data2variables();
+            o.data2variables(false);
         }
 
         System.out.println("Building UML CSP Finished");

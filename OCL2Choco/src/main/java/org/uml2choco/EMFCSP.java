@@ -2,6 +2,7 @@ package org.uml2choco;
 
 import org.oclinchoco.CSP;
 import org.oclinchoco.navigation.NavTable;
+import org.oclinchoco.property.AttributeTable;
 import org.oclinchoco.property.ReferenceTable;
 import org.oclinchoco.property.SingleIntTable;
 
@@ -31,7 +32,8 @@ public class EMFCSP extends CSP{
     HashMap<String,ReferenceTable> referencetables; // NavOrAttribCallExp.getName() -> ReferenceTable
     HashMap<EObject,Integer> objPtrVals; //EObject -> int, useful when makeing self Node
 
-    HashMap<String,SingleIntTable> attributetables;
+    HashMap<String,AttributeTable> attributetables;
+    HashMap<String,SingleIntTable> singleIntTable;
 
     HashMap<String,NavTable> navtables;
     //UML View
@@ -41,6 +43,7 @@ public class EMFCSP extends CSP{
     public EMFCSP(){
         referencetables = new HashMap<>();
         attributetables = new HashMap<>();
+        singleIntTable = new HashMap<>();
         navtables = new HashMap<>();
         objPtrVals = new HashMap<>();
 
@@ -68,16 +71,24 @@ public class EMFCSP extends CSP{
         return navtables.get(prop);
     }
 
-    public void addAttributeTable(EAttribute eattrib, int rows){
+    public void addSingleIntTable(EAttribute eattrib, int rows){
         SingleIntTable attribtable = new SingleIntTable(this, rows);
-        // System.out.println(eattrib.getName()+" "+attribtable);
+        System.out.println(eattrib.getName()+" "+attribtable);
         tablenames.add(eattrib.getName());
         navtables.put(eattrib.getName(), attribtable);
-        attributetables.put(eattrib.getName(), attribtable);
-        // System.out.println(eattrib.getName()+" "+attributetables.get(eattrib.getName()));
+        singleIntTable.put(eattrib.getName(), attribtable);
+        System.out.println(eattrib.getName()+" "+attributetables.get(eattrib.getName()));
     }
 
-    public SingleIntTable getAttribTable(String prop){
+    public SingleIntTable getSingleIntTable(String prop){
+        return singleIntTable.get(prop);
+    }
+
+    public void addAttributeTable(EAttribute eAttribute, int rows, int minCard, int maxCard){
+        AttributeTable attribtable = new AttributeTable(this, rows, minCard, maxCard);
+    }
+
+    public AttributeTable getAttribTable(String prop){
         return attributetables.get(prop);
     }
 
@@ -117,14 +128,17 @@ public class EMFCSP extends CSP{
             this.field_variables=av;
         }
 
-        public void data2variables(){
+        public void data2variables(boolean verifMode){
+            int bufferEmpty;
             for(EReference r : references){
+                bufferEmpty=-1;
+                if(verifMode) bufferEmpty=0;
                 EList<EObject> data = links.get(r);
                 // System.out.println("Loading data for "+r.getName());
                 ReferenceTable.AdjList variables = link_variables.get(r);
                 int cols = variables.size();
                 int[] dataBuffer = new int[cols];
-                for(int i=0;i<cols;i++) dataBuffer[i]=-1;//-1
+                for(int i=0;i<cols;i++) dataBuffer[i]=bufferEmpty;//-1
 
                 // System.out.println("Data to Load: "+data);
                 for(int i=0;i<data.size();i++) {
@@ -136,6 +150,8 @@ public class EMFCSP extends CSP{
             }
 
             for(EAttribute a : attributes){
+                bufferEmpty=CSP.MIN_BOUND-1;
+                if(verifMode) bufferEmpty=CSP.MIN_BOUND;
                 // System.out.println("Loading "+a.getName());
                 int[] data = {fields.get(a)};
                 SingleIntTable.SingleIntAttribute variable = field_variables.get(a);
@@ -177,6 +193,7 @@ public class EMFCSP extends CSP{
         for(String r : tablenames){
             Object out = referencetables.get(r);
             if(out==null) out = attributetables.get(r);
+            if(out==null) out = singleIntTable.get(r);
             System.out.println(r);
             System.out.println(out);
         }
