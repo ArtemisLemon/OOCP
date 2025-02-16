@@ -6,4 +6,4 @@ helper context Zoo!Cage def: cageCapacity(): Boolean =
     self.animals.size() <= self.capacity;
 
 helper context Zoo!Cage def: cageSpeciesLimit(): Boolean = 
-    self.animals;
+    self.animals.species.asSet().size() < 2;
