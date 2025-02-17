@@ -70,6 +70,7 @@ public class XMI2Choco {
                         objattrib2int.put(e, a.getName(), (int)e.eGet(a));
                     }
                 } else {
+                    System.out.println("Building Attribute Table for "+a.getName()+" with "+rows+" rows");
                     csp.addAttributeTable(a, rows, a.getLowerBound(), a.getUpperBound());
                     for(EObject e : class2objects.get(c)){
 
@@ -144,31 +145,21 @@ public class XMI2Choco {
                 }
         }
 
-        csp.printJustTheTables();
+        csp.printTables();
 
         System.out.println("Recording EMFCSP Objects");
         for(EObject o : eobjects){
-            // System.out.println(o.eClass().getName()+csp.getObjPtr(o));
-            EList<EReference> erefs = class2references.get(o.eClass());
-            HashMap<EReference,EList<EObject>> ref2objects = new HashMap<>();
-            HashMap<EReference,ReferenceTable.AdjList> var2objects = new HashMap<>();
-            for(EReference r : erefs){
-                ref2objects.put(r,objref2objlist.get(o,r.getName()));
-                var2objects.put(r,csp.getRefTable(r.getName()).adjList(csp.getObjPtr(o)));
-            }
 
+            EList<EReference> erefs = class2references.get(o.eClass());
+            
             EList<EAttribute> eatts = class2attributes.get(o.eClass());
             EList<EAttribute> modeledatts = new BasicEList<>();
-            HashMap<EAttribute,Integer> att2int = new HashMap<>();
-            HashMap<EAttribute,SingleIntTable.SingleIntAttribute> att2var =new HashMap<>();
             for(EAttribute a : eatts){
                 if(!a.getEAttributeType().getInstanceClassName().equals("int")) continue;
                 modeledatts.add(a);
-                att2int.put(a, objattrib2int.get(o,a.getName()));
-                att2var.put(a,csp.getSingleIntTable(a.getName()).singleattribute(csp.getObjPtr(o)));
             }
 
-            csp.addEMFCSPObject(o,erefs,ref2objects,var2objects,modeledatts,att2int,att2var);
+            csp.addEMFCSPObject(o,erefs,modeledatts);
         }
 
         System.out.println("Loading data for EMFCSP Objects");
