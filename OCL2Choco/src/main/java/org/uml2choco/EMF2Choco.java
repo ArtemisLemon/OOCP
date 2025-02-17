@@ -49,7 +49,7 @@ public class EMF2Choco {
         rootObject = model.getContents().getFirst();
         XMI2Choco.buildUMLCSP(rootObject,csp);
 
-        csp.printJustTheTables();
+        csp.printTables();
 
         // OCLCSP
         List<UContext> results = new ArrayList<>();
@@ -89,7 +89,7 @@ public class EMF2Choco {
         System.out.println("\n\n .:Solving:.");
         if(csp.model().getSolver().solve()){
             System.out.println("SAT");
-            csp.printJustTheTables();
+            csp.printTables();
             System.out.println("Vars at top of OCLExpression");
             for(UContext res : results){
                 switch (res.getSource()) {
