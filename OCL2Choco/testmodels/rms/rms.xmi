@@ -2,6 +2,10 @@
 <rMSConfigurator:Factory xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:rMSConfigurator="http://www.example.org/rMSConfigurator">
   <task time="3" name="Hammer Nail"/>
   <task time="1" name="Hit it a bit more"/>
-  <machines name="Hammer"/>
+  <task time="2" name="Apply Tape"/>
+  <machines name="Hammer" canDo="//@task.0 //@task.1"/>
+  <machines name="Duct Tape" canDo="//@task.2"/>
+  <machines name="WD-40" />
   <stage maxMachines="3"/>
+  <stage maxMachines="1"/>
 </rMSConfigurator:Factory>
